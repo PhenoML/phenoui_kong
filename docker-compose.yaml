@@ -1,0 +1,24 @@
+services:
+  kong:
+    build: .
+    extra_hosts:
+      - "host.docker.internal:host-gateway" # for linux
+    environment:
+      KONG_PLUGINS: bundled,phenoui_maps
+      KONG_PLUGINSERVER_NAMES: js
+      KONG_PLUGINSERVER_JS_START_CMD: /usr/local/bin/kong-js-pluginserver -v --plugins-directory /kong/js_plugins/phenoui_maps
+      KONG_PLUGINSERVER_JS_QUERY_CMD: /usr/local/bin/kong-js-pluginserver --plugins-directory /kong/js_plugins/phenoui_maps --dump-all-plugins
+      KONG_PLUGINSERVER_JS_SOCKET: /usr/local/kong/js_pluginserver.sock
+    volumes:
+      - "./config:/kong/declarative/"
+      - "./plugins/phenoui_maps/build:/kong/js_plugins/phenoui_maps/"
+      - "./plugins/phenoui_maps/configs:/phenoui_maps_configs/"
+    ports:
+      - "8000:8000"
+      - "8443:8443"
+      - "8001:8001"
+      - "8444:8444"
+      - "8002:8002"
+      - "8445:8445"
+      - "8003:8003"
+      - "8004:8004"

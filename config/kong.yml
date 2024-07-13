@@ -1,0 +1,17 @@
+_format_version: "3.0"
+_transform: true
+
+services:
+  - name: strapi
+    url: http://host.docker.internal:1337
+    routes:
+      - name: questionnaire_start
+        paths:
+          - /questionnaire/start
+        strip_path: true
+        plugins:
+          - name: phenoui_maps
+            config:
+              target_route: /api/questionnaire-starts
+              method: GET
+              query_override: /phenoui_maps_configs/query.jpath

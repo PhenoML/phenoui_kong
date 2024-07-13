@@ -1,0 +1,8 @@
+{
+  filters: {
+    slug: {
+      "$eq": 'league-demo'
+    }
+  },
+  populate: '*'
+}
