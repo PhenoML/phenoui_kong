@@ -48,6 +48,14 @@ contain the JMESPath queries that are used to transform the headers, query, requ
 
 It is recommended to use [postman](https://www.postman.com/) or [curl](https://curl.se/) to test the API gateway.
 
+When debugging the gateway, changes to the `kong.yml` file, `jpath` configurations or plugin source code require a
+restart of the gateway. You can restart the gateway by typing the following command on any terminal:
+
+```shell
+docker exec -d phenoui_kong-kong-1 kong reload
+```
+Note: the container name may vary depending on the docker-compose configuration and how many instances are running.
+
 ### JMESPath
 
 PhenoUI MAPS is built on top of the JMESPath query language. You can use the 
