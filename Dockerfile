@@ -4,7 +4,15 @@ FROM kong/kong-gateway:3.7.1.2
 USER root
 
 # Install dependencies to run JS plugins
-RUN apt update && apt install -y nodejs npm && npm install -g kong-pdk
+RUN apt update && apt install -y luarocks
+
+# create folder for maps plugin
+RUN mkdir -p /usr/local/share/lua/5.1/kong/plugins/pheno_ui_maps
+# Install lua-jmespath dependency using luarocks
+RUN luarocks install lua-jmespath --force
+
+# mount the plugin
+VOLUME ["/usr/local/share/lua/5.1/kong/plugins/pheno_ui_maps"]
 
 # Ensure kong user is selected for image execution
 USER kong

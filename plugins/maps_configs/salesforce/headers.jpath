@@ -1,0 +1,5 @@
+{
+  "Content-Type": 'application/json',
+  "Accept": 'application/json',
+  "Authorization": concat('Bearer ', env('SALESFORCE_API_TOKEN'))
+}

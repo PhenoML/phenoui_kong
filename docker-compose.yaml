@@ -4,15 +4,13 @@ services:
     extra_hosts:
       - "host.docker.internal:host-gateway" # for linux
     environment:
-      KONG_PLUGINS: bundled,phenoui_maps
-      KONG_PLUGINSERVER_NAMES: js
-      KONG_PLUGINSERVER_JS_START_CMD: /usr/local/bin/kong-js-pluginserver -v --plugins-directory /kong/js_plugins/phenoui_maps
-      KONG_PLUGINSERVER_JS_QUERY_CMD: /usr/local/bin/kong-js-pluginserver --plugins-directory /kong/js_plugins/phenoui_maps --dump-all-plugins
-      KONG_PLUGINSERVER_JS_SOCKET: /usr/local/kong/js_pluginserver.sock
+      KONG_PLUGINS: bundled,pheno_ui_maps
+      KONG_NGINX_MAIN_ENV: "SALESFORCE_API_TOKEN"
+      SALESFORCE_API_TOKEN: $SALESFORCE_API_TOKEN
     volumes:
       - "./config:/kong/declarative/"
-      - "./plugins/phenoui_maps/build:/kong/js_plugins/phenoui_maps/"
-      - "./plugins/phenoui_maps/configs:/phenoui_maps_configs/"
+      - "./plugins/maps:/usr/local/share/lua/5.1/kong/plugins/pheno_ui_maps"
+      - "./plugins/maps_configs:/pheno_ui_maps_configs/"
     ports:
       - "8000:8000"
       - "8443:8443"

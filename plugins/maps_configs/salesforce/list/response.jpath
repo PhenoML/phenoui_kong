@@ -1,0 +1,5 @@
+body.records[*].{
+  id: Id,
+  title: Name,
+  description: 'A questionnaire'
+}

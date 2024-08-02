@@ -2,16 +2,95 @@ _format_version: "3.0"
 _transform: true
 
 services:
-  - name: strapi
-    url: http://host.docker.internal:1337
+  - name: tester
+    url: http://host.docker.internal:3000
     routes:
-      - name: questionnaire_start
+      - name: get_test
+        paths:
+          - /tester/get
+        strip_path: true
+        plugins:
+          - name: pheno_ui_maps
+            config:
+              target_route: ('/api/get')
+              method: GET
+              headers_transform: /pheno_ui_maps_configs/tester/get/headers.jpath
+              query_transform: /pheno_ui_maps_configs/tester/get/query.jpath
+              response_transform: /pheno_ui_maps_configs/tester/get/response.jpath
+
+      - name: post_test
+        paths:
+          - /tester/post
+        strip_path: true
+        plugins:
+          - name: pheno_ui_maps
+            config:
+              target_route: ('/api/post')
+              method: POST
+              request_transform: /pheno_ui_maps_configs/tester/post/request.jpath
+
+  - name: salesforce
+    url: https://rogersbh--phenoml.sandbox.my.salesforce.com
+    routes:
+      - name: salesforce_questionnaire_list
+        paths:
+          - /questionnaire/list
+        strip_path: true
+        plugins:
+          - name: pheno_ui_maps
+            config:
+              target_route: ('/services/data/v61.0/query')
+              method: GET
+              headers_transform: /pheno_ui_maps_configs/salesforce/headers.jpath
+              query_transform: /pheno_ui_maps_configs/salesforce/list/query.jpath
+              response_transform: /pheno_ui_maps_configs/salesforce/list/response.jpath
+
+      - name: salesforce_text_random
+        paths:
+          - /text/random
+        strip_path: true
+        plugins:
+          - name: pheno_ui_maps
+            config:
+              target_route: ('/services/data/v61.0/query')
+              method: GET
+              headers_transform: /pheno_ui_maps_configs/salesforce/headers.jpath
+              query_transform: /pheno_ui_maps_configs/salesforce/text/random/query.jpath
+              response_transform: /pheno_ui_maps_configs/salesforce/text/random/response.jpath
+
+      - name: salesforce_questionnaire_start
         paths:
           - /questionnaire/start
         strip_path: true
         plugins:
-          - name: phenoui_maps
+          - name: pheno_ui_maps
             config:
-              target_route: /api/questionnaire-starts
+              target_route: ('/services/data/v61.0/query')
               method: GET
-              query_override: /phenoui_maps_configs/query.jpath
+              headers_transform: /pheno_ui_maps_configs/salesforce/headers.jpath
+              query_transform: /pheno_ui_maps_configs/salesforce/start/query.jpath
+              response_transform: /pheno_ui_maps_configs/salesforce/start/response.jpath
+
+      - name: salesforce_questionnaire_submit
+        paths:
+          - /questionnaire/submit
+        strip_path: true
+        plugins:
+          - name: pheno_ui_maps
+            config:
+              target_route: ('/services/data/v61.0/sobjects/Pheno__c')
+              method: POST
+              headers_transform: /pheno_ui_maps_configs/salesforce/headers.jpath
+              request_transform: /pheno_ui_maps_configs/salesforce/submit/request.jpath
+
+      - name: salesforce_questionnaire_end
+        paths:
+          - /questionnaire/end
+        strip_path: true
+        plugins:
+          - name: pheno_ui_maps
+            config:
+              target_route: ('/services/data/v61.0/sobjects/Pheno__c')
+              method: POST
+              headers_transform: /pheno_ui_maps_configs/salesforce/headers.jpath
+              request_transform: /pheno_ui_maps_configs/salesforce/questionnaire_end/request.jpath
